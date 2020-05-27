@@ -33,6 +33,7 @@ import io.narayana.lra.logging.LRALogger;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -112,6 +113,7 @@ public class Coordinator {
     @APIResponse(description = "The LRA",
         content = @Content(schema = @Schema(type = SchemaType.ARRAY, implementation = LRAData.class))
     )
+    @RolesAllowed({"admin","client"})
     public List<LRAData> getAllLRAs(
             @Parameter(name = STATUS_PARAM_NAME, description = "Filter the returned LRAs to only those in the give state (see CompensatorStatus)")
             @QueryParam(STATUS_PARAM_NAME) @DefaultValue("") String state) {
@@ -146,6 +148,7 @@ public class Coordinator {
         @APIResponse(responseCode = "200",
             description = "The LRA exists. The status is reported in the content body.")
     })
+    @RolesAllowed({"admin","client"})
     public Response getLRAStatus(
         @Parameter(name = "LraId",
             description = "The unique identifier of the LRA", required = true)
@@ -175,6 +178,7 @@ public class Coordinator {
             description = "The LRA exists. The status is reported in the content body.",
             content = @Content(schema = @Schema(implementation = LRAData.class)))
     })
+    @RolesAllowed({"admin","client"})
     public LRAData getLRAInfo(
             @Parameter(name = "LraId", description = "The unique identifier of the LRA", required = true)
             @PathParam("LraId") String lraId) throws NotFoundException {
@@ -205,6 +209,7 @@ public class Coordinator {
         @APIResponse(responseCode = "500",
             description = "A new LRA could not be started")
     })
+    @RolesAllowed({"admin","client"})
     public Response startLRA(
             @Parameter(name = CLIENT_ID_PARAM_NAME,
                 description = "Each client is expected to have a unique identity (which can be a URL).",
@@ -272,6 +277,7 @@ public class Coordinator {
         @APIResponse(responseCode = "412",
             description = "The LRA is not longer active (ie the complete or compensate messages have been sent")
     })
+    @RolesAllowed({"admin","client"})
     public Response renewTimeLimit(
             @Parameter(name = TIMELIMIT_PARAM_NAME, description = "The new time limit for the LRA", required = true)
             @QueryParam(TIMELIMIT_PARAM_NAME) @DefaultValue("0") Long timelimit,
@@ -282,6 +288,7 @@ public class Coordinator {
 
     @GET
     @Path("nested/{NestedLraId}/status")
+    @RolesAllowed({"admin","client"})
     public Response getNestedLRAStatus(@PathParam("NestedLraId")String nestedLraId) {
         if (!lraService.hasTransaction(nestedLraId)) {
             // it must have compensated TODO maybe it's better to keep nested LRAs in separate collection
@@ -316,18 +323,21 @@ public class Coordinator {
 
     @PUT
     @Path("nested/{NestedLraId}/complete")
+    @RolesAllowed({"admin","system"})
     public Response completeNestedLRA(@PathParam("NestedLraId") String nestedLraId) {
         return Response.ok(mapToParticipantStatus(endLRA(toURI(nestedLraId), false, true)).name()).build();
     }
 
     @PUT
     @Path("nested/{NestedLraId}/compensate")
+    @RolesAllowed({"admin","system"})
     public Response compensateNestedLRA(@PathParam("NestedLraId") String nestedLraId) {
         return Response.ok(mapToParticipantStatus(endLRA(toURI(nestedLraId), true, true)).name()).build();
     }
 
     @PUT
     @Path("nested/{NestedLraId}/forget")
+    @RolesAllowed({"admin","system"})
     public Response forgetNestedLRA(@PathParam("NestedLraId") String nestedLraId) {
         lraService.remove(toURI(nestedLraId));
 
@@ -356,6 +366,7 @@ public class Coordinator {
             content = @Content(
                 schema = @Schema(title = "one of the LRAStatus enum values", implementation = String.class)))
     })
+    @RolesAllowed({"admin","client"})
     public Response closeLRA(
             @Parameter(name = "LraId", description = "The unique identifier of the LRA", required = true)
             @PathParam("LraId")String txId) throws NotFoundException {
@@ -376,6 +387,7 @@ public class Coordinator {
             content = @Content(
                 schema = @Schema(title = "one of the LRAStatus enum values", implementation = String.class)))
     })
+    @RolesAllowed({"admin","client"})
     public Response cancelLRA(
             @Parameter(name = "LraId", description = "The unique identifier of the LRA", required = true)
             @PathParam("LraId")String lraId) throws NotFoundException {
@@ -414,6 +426,7 @@ public class Coordinator {
         content = @Content(schema = @Schema(title = "A new LRA recovery id", description = "An URI representing the " +
             "recovery id of this join request")))
     })
+    @RolesAllowed({"admin","client"})
     public Response joinLRAViaBody(
             @Parameter(name = "LraId", description = "The unique identifier of the LRA", required = true)
             @PathParam("LraId")String lraId,
@@ -531,6 +544,7 @@ public class Coordinator {
             description = "The LRA is not longer active (ie in the complete or compensate messages have been sent"),
         @APIResponse(responseCode = "200", description = "If the participant was successfully removed from the LRA")
     })
+    @RolesAllowed({"admin","client"})
     public Response leaveLRA(
             @Parameter(name = "LraId", description = "The unique identifier of the LRA", required = true)
             @PathParam("LraId") String lraId,
