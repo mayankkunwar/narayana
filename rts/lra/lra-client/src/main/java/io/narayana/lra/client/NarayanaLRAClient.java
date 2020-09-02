@@ -768,6 +768,12 @@ public class NarayanaLRAClient implements Closeable {
             }
         } finally {
             Current.pop(lra);
+
+            URI nextLRA = Current.peek();
+
+            if (nextLRA != null) {
+                init(nextLRA);
+            }
         }
     }
 
