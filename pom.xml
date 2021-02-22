@@ -439,7 +439,7 @@
     <version.org.jboss.logging.jboss-logging>3.2.1.Final</version.org.jboss.logging.jboss-logging>
     <version.org.jboss.logging.jboss-logging-processor>2.0.0.Final</version.org.jboss.logging.jboss-logging-processor>
     <version.org.jboss.integration>6.0.0.CR1</version.org.jboss.integration>
-    <version.org.jboss.ironjacamar>1.1.1.Final</version.org.jboss.ironjacamar>
+    <version.org.jboss.ironjacamar>1.4.27.Final</version.org.jboss.ironjacamar>
     <version.org.jboss.ws>1.0.2.Final</version.org.jboss.ws>
     <version.org.jboss.resteasy>3.9.1.Final</version.org.jboss.resteasy>
     <version.org.jboss.weld>2.3.5.Final</version.org.jboss.weld>
