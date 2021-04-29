@@ -1,0 +1,35 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.github.spotbugs:spotbugs-maven-plugin
+    versions:
+    - 4.2.0
+  - dependency-name: org.jboss.ironjacamar:ironjacamar-spec-api
+    versions:
+    - 1.4.25.Final
+  - dependency-name: org.apache.karaf.shell:org.apache.karaf.shell.console
+    versions:
+    - 4.3.0
+  - dependency-name: junit:junit
+    versions:
+    - 4.13.1
+  - dependency-name: io.thorntail:thorntail-maven-plugin
+    versions:
+    - 2.7.0.Final
+  - dependency-name: io.thorntail:cdi
+    versions:
+    - 2.7.0.Final
+  - dependency-name: io.thorntail:bom-all
+    versions:
+    - 2.7.0.Final
+  - dependency-name: org.jboss.arquillian.junit:arquillian-junit-container
+    versions:
+    - 1.6.0.Final
+  - dependency-name: org.jboss.arquillian.protocol:arquillian-protocol-servlet
+    versions:
+    - 1.6.0.Final
