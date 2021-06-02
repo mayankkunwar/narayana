@@ -192,7 +192,7 @@
     <version.com.sun.jersey>1.9.1</version.com.sun.jersey>
     <version.com.sybase.jConnect>6.0</version.com.sybase.jConnect>
     <version.commons-httpclient>3.1-jbossorg-1</version.commons-httpclient>
-    <version.dom4j>1.6.1</version.dom4j>
+    <version.dom4j>1.6.1-brew</version.dom4j>
     <version.doxia>1.8.1</version.doxia>
     <version.hamcrest>2.2</version.hamcrest>
     <version.io.mashona>1.0.0.Beta1</version.io.mashona>
