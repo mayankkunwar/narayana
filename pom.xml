@@ -183,7 +183,7 @@
     <!-- The surefire/failsafe test execution logs goes to a file by default -->
     <testLogToFile>true</testLogToFile>
     <version.asm>3.3.1</version.asm>
-    <version.com.github.spotbugs.spotbugs-maven-plugin>3.1.10</version.com.github.spotbugs.spotbugs-maven-plugin>
+    <version.com.github.spotbugs.spotbugs-maven-plugin>4.2.3</version.com.github.spotbugs.spotbugs-maven-plugin>
     <version.com.h2database>1.4.195</version.com.h2database>
     <version.com.ibm>11.5.0.0</version.com.ibm>
     <version.com.microsoft.sqlserver>mssql2005_sqljdbc_2.0</version.com.microsoft.sqlserver>
