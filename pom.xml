@@ -219,7 +219,7 @@
     <version.org.codehaus.mojo.jboss-maven-plugin>1.5.0</version.org.codehaus.mojo.jboss-maven-plugin>
     <version.org.eclipse.microprofile.openapi>1.1.2</version.org.eclipse.microprofile.openapi>
     <version.org.hibernate.javax.persistence>1.0.1.Final</version.org.hibernate.javax.persistence>
-    <version.org.jacoco>0.8.3</version.org.jacoco>
+    <version.org.jacoco>0.8.7</version.org.jacoco>
     <version.org.jacorb.jacorb>2.3.2-jbossorg-5</version.org.jacorb.jacorb>
     <version.org.jacorb.jacorb-idl-compiler>2.3.1</version.org.jacorb.jacorb-idl-compiler>
     <version.org.jboss.arquillian.container.weld>1.0.0.CR9</version.org.jboss.arquillian.container.weld>
@@ -728,6 +728,21 @@
                   </rules>
                 </configuration>
               </execution>
+              <execution>
+                <id>report-aggregate</id>
+                <goals>
+                  <goal>report-aggregate</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <title>JaCoCo</title>
+                  <footer>Code Coverage Report for JaCoCo ${project.version}</footer>
+                  <includes>
+                    <!-- Analyze class files only to exclude shaded agent JAR from report -->
+                    <include>**/*.class</include>
+                  </includes>
+                </configuration>
+              </execution>
             </executions>
           </plugin>
           <plugin>
@@ -754,9 +769,71 @@
                 </goals>
                 <phase>test-compile</phase>
                 <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.jacoco</groupId>
+                      <artifactId>org.jacoco.ant</artifactId>
+                      <version>${version.org.jacoco}</version>
+                    </artifactItem>
+                  </artifactItems>
                   <stripVersion>true</stripVersion>
                   <includeGroupIds>org.jacoco</includeGroupIds>
                   <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.8</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.jacoco</groupId>
+                <artifactId>org.jacoco.ant</artifactId>
+                <version>${version.org.jacoco}</version>
+              </dependency>
+            </dependencies>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <!--                <phase>test</phase>-->
+                <configuration>
+                  <target>
+                    <!-- Execute an ant task within maven -->
+                    <echo message="Generating JaCoCo Reports"></echo>
+                    <taskdef classname="org.jacoco.ant.ReportTask" name="report">
+                      <classpath path="${user.dir}/target/jacoco-jars/org.jacoco.ant.jar"></classpath>
+                    </taskdef>
+                    <mkdir dir="${user.dir}/coverage-report"></mkdir>
+                    <report>
+                      <executiondata>
+                        <fileset dir="${user.dir}/ArjunaCore/arjuna/target/coverage-reports">
+                          <include name="jacoco-ut.exec"></include>
+                        </fileset>
+                        <fileset dir="${user.dir}/ArjunaCore/txoj/target/coverage-reports">
+                          <include name="jacoco-ut.exec"></include>
+                        </fileset>
+                      </executiondata>
+                      <structure name="jacoco-multi Coverage Project">
+                        <group name="jacoco-multi">
+                          <classfiles>
+                            <fileset dir="${user.dir}/ArjunaCore/arjuna/target/classes"></fileset>
+                            <fileset dir="${user.dir}/ArjunaCore/txoj/target/classes"></fileset>
+                          </classfiles>
+                          <sourcefiles encoding="UTF-8">
+                            <fileset dir="${user.dir}/ArjunaCore/arjuna/"></fileset>
+                            <fileset dir="${user.dir}/ArjunaCore/txoj/"></fileset>
+                          </sourcefiles>
+                        </group>
+                      </structure>
+                      <html destdir="${user.dir}/coverage-report/html"></html>
+                      <xml destfile="${user.dir}/coverage-report/coverage-report.xml"></xml>
+                      <csv destfile="${user.dir}/coverage-report/coverage-report.csv"></csv>
+                    </report>
+                  </target>
                 </configuration>
               </execution>
             </executions>
