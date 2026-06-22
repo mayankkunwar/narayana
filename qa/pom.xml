@@ -40,7 +40,7 @@
       <artifactId>jboss-logging</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.activemq</groupId>
+      <groupId>org.apache.artemis</groupId>
       <artifactId>artemis-journal</artifactId>
     </dependency>
     <dependency>

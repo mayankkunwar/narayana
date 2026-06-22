@@ -20,7 +20,7 @@ import org.apache.activemq.artemis.core.journal.PreparedTransactionInfo;
 import org.apache.activemq.artemis.core.journal.RecordInfo;
 import org.apache.activemq.artemis.core.io.SequentialFileFactory;
 import org.apache.activemq.artemis.core.journal.TransactionFailureCallback;
-import org.apache.activemq.artemis.core.io.aio.AIOSequentialFileFactory;
+import org.apache.artemis.core.io.aio2.AIO2Helper;
 import org.apache.activemq.artemis.core.journal.impl.JournalImpl;
 import org.apache.activemq.artemis.core.io.nio.NIOSequentialFileFactory;
 
@@ -97,8 +97,8 @@ public class HornetqJournalStore
         storeDirCanonicalPath = storeDir.getCanonicalPath();
 
         SequentialFileFactory sequentialFileFactory;
-        if(envBean.isAsyncIO() && AIOSequentialFileFactory.isSupported()) {
-            sequentialFileFactory = new AIOSequentialFileFactory(
+        if(envBean.isAsyncIO() && AIO2Helper.isSupported()) {
+            sequentialFileFactory = AIO2Helper.getAIO2SequentialFileFactory(
                     storeDir,
                     envBean.getBufferSize(),
                     (int)(1000000000d / envBean.getBufferFlushesPerSecond()), // bufferTimeout nanos .000000001 second

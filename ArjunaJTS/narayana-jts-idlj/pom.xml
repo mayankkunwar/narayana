@@ -33,7 +33,7 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.apache.activemq</groupId>
+      <groupId>org.apache.artemis</groupId>
       <artifactId>artemis-journal</artifactId>
       <scope>provided</scope>
       <exclusions>
